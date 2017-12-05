@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <title>Session Words</title>
+        
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+        {% load staticfiles %}
+        <link rel="stylesheet" type="text/css" href="{% static 'session_words/style.css' %}">
+    </head>
+    <body>
+        <div class="form-check text-center mt-4 ">
+                <form action="add_word" method="POST">
+                    {% csrf_token %}
+                    <div class="form-check-label mb-3">
+                        <label for='word'>Add A New Word</label>
+                        <input type="text" name="content" value="">
+                    </div>
+                    <div class="form-check-label mb-3">
+                        <label for="color">Choose Color:</label>
+                        <label><input type="radio" name="color" value="red">Red</label>
+                        <label><input checked="checked" type="radio" name="color" value="green">Green</label>
+                        <label><input type="radio" name="color" value="blue">Blue</label>
+                    </div>
+                    <div class="form-check-label mt-3">
+                            <label for="show-big">Show In BIG Fonts!</label>
+                            <input type="checkbox" name="show-big">
+                    </div>
+                    <input class="btn btn-primary" type="submit" value="Add to Session">
+                </form>
+        </div> 
+        <div class="text-center mt-4">
+            <hr>
+                <a href="/clear"><button class="btn btn-danger mb-2">Clear Session</button></a>
+                {% if request.session.words %}
+                    {% for word in request.session.words %}
+                    <p><span style="color:{{ word.color }}" class="{{ word.big }}">{{word.content}}</span> - added on {{ word.created_at }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+    </body>
+</html>
